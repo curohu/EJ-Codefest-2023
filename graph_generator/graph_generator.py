@@ -82,7 +82,7 @@ fig.update_layout(
     plot_bgcolor='GhostWhite'
 )
 # fig.show()
-# fig.write_html('generated_graph.html')
+fig.write_html('all_branches_generated_graph.html')
 
 j = []
 for k in fulldf.keys():
