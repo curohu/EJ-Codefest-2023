@@ -81,33 +81,159 @@ fig.update_xaxes(rangeslider_visible=True)
 fig.update_layout(
     plot_bgcolor='GhostWhite'
 )
+# fig.show()
+# fig.write_html('generated_graph.html')
+
+j = []
+for k in fulldf.keys():
+    if 't' not in k and 'm' not in k and k != 'Time':
+        j.append(k)
+
+print(j)
+
+dfs = {}
+for name in j:
+    d = {}
+    for k in fulldf.keys():
+        if k == 'Time':
+            continue
+        if str(name) in str(k):
+            d[k] = fulldf[k].to_list()
+    d['Time'] = fulldf['Time'].to_list()
+    ws = pd.DataFrame(data=d)
+
+    dfs[name] = ws
+for df in dfs:
+    print(dfs[df])
+
+
+fig = go.Figure()
+
+for i in dfs['9839'].keys():
+    if i == 'Time':
+        continue
+    fig.add_trace(go.Scatter(x = fulldf['Time'],
+                                y = fulldf[i], 
+                                name = i))
+
+
+fig.update_xaxes(rangeslider_visible=True,)
+fig.update_layout(
+    plot_bgcolor='GhostWhite'
+)
+# fig.show()
+# fig.write_html('generated_graph.html')
+
+cdf = fulldf.copy()
+
+def fillcolc(label):
+    if label >= 1:
+        return 'red'
+    else:
+        return 'GhostWhite'
+
+fig = go.Figure()
+
+fulldf['label'] = np.where(fulldf['9839']>fulldf['9839_t'], 1, 0)
+fulldf['group'] = fulldf['label'].ne(fulldf['label'].shift()).cumsum()
+fulldf = fulldf.groupby('group')
+dfz = []
+for name, data in fulldf:
+    dfz.append(data)
+try:
+    for df in dfz:
+        print(df)
+        fig.add_trace(go.Scatter(x = df['Time'], 
+                                y = df['9839_t']
+                                , name = '9839_t',
+                                showlegend=False,
+                                line = dict(color='red', width=0)))
+
+        fig.add_trace(go.Scatter(x = df['Time'], 
+                                y = df['9839'],
+                                name = '9839',
+                                line = dict(color='red', width=0),
+                                showlegend=False,
+                                fill='tonexty',
+                                fillcolor= fillcolc(df['label'].iloc[0])))
+except Exception as e:
+    pass
+
+fig.add_trace(go.Scatter(x = cdf['Time'], 
+                        y = cdf['9839_t']
+                        , name = 'Dynamically Generated Alert Threshold',
+                        line = dict(color = 'DodgerBlue', width=3),
+                        ))
+
+fig.add_trace(go.Scatter(x = cdf['Time'], 
+                        y = cdf['9839'],
+                        name = 'Source Data',
+                        line = dict(color = 'Olive', width=3)))
+
+fig.update_xaxes(rangeslider_visible=True)
+# print(fulldf)
+# print(fulldf['label'].iloc[0])
+fig.update_layout(
+    # showlegend=False,
+    plot_bgcolor='GhostWhite',
+    title="Example of Anomaly Detection using a Sliding Window",
+    yaxis_title="Generic Metric",
+    xaxis_title="Time",
+    legend_title="DataType",
+    font=dict(
+        family="Arial",
+        size=20,
+        color="DarkSlateGray"))
 fig.show()
 fig.write_html('generated_graph.html')
+
+
+
+
+
+
+
+
+
+def line_intersection(line1, line2):
+    xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
+    ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])
+
+    def det(a, b):
+        return a[0] * b[1] - a[1] * b[0]
+
+    div = det(xdiff, ydiff)
+    if div == 0:
+       raise Exception('lines do not intersect')
+
+    d = (det(*line1), det(*line2))
+    x = det(d, xdiff) / div
+    y = det(d, ydiff) / div
+    return x, y
+
 
 # print(fulldf.query("Time=={}".format(60)))
 # print(fulldf['Time'])
 
-# line1 = 
+# time = dfs['9839']['Time'].to_list()
+# arr1 = dfs['9839']['9839'].to_list()
+# arr2 = dfs['9839']['9839_t'].to_list()
+
+# previousT = None
+
+# for i in range(len(time)):
+#     print(time[i],arr1[i],arr2[i])
+#     if previousT:
+#         l1 = ((previousT[0],previousT[1])(time[i],arr1[i]))
+#         l2 = ((previousT[0],previousT[2])(time[i],arr2[i]))
+#         print(line_intersection(l1,l2))
+#     previousT = (time[i],arr1[i],arr2[i])
 
 
+# def if_intersect(line1, lin2):
+#     xdiff = ( , )
 
 
-
-# def line_intersection(line1, line2):
-#     xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
-#     ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])
-
-#     def det(a, b):
-#         return a[0] * b[1] - a[1] * b[0]
-
-#     div = det(xdiff, ydiff)
-#     if div == 0:
-#        raise Exception('lines do not intersect')
-
-#     d = (det(*line1), det(*line2))
-#     x = det(d, xdiff) / div
-#     y = det(d, ydiff) / div
-#     return x, y
 
 # print line_intersection((A, B), (C, D))
 
