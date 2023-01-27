@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 import pandas as pd
 # importing matplotlib library
 import matplotlib.pyplot as plt
+import numpy as np
 
 dataPath = os.path.dirname(os.path.realpath(__file__))+'/../metric_generation/branch_metrics.csv'
 
@@ -82,6 +83,112 @@ fig.update_layout(
 )
 fig.show()
 fig.write_html('generated_graph.html')
+
+# print(fulldf.query("Time=={}".format(60)))
+# print(fulldf['Time'])
+
+# line1 = 
+
+
+
+
+
+# def line_intersection(line1, line2):
+#     xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
+#     ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])
+
+#     def det(a, b):
+#         return a[0] * b[1] - a[1] * b[0]
+
+#     div = det(xdiff, ydiff)
+#     if div == 0:
+#        raise Exception('lines do not intersect')
+
+#     d = (det(*line1), det(*line2))
+#     x = det(d, xdiff) / div
+#     y = det(d, ydiff) / div
+#     return x, y
+
+# print line_intersection((A, B), (C, D))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# lst0 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+# lst1 = [2,4,1,4,1,5,7,8,3,2,4,7,8,2,1]
+# lst2 = [9,1,3,7,8,2,0,1,2,5,9,3,5,2,6]
+
+# x = fulldf['Time'].to_numpy()
+# y = fulldf['4873'].to_numpy()
+# z = fulldf['6128'].to_numpy()
+
+# # slopes and offsets lst1 vs lst0
+# m = np.diff(y)/np.diff(x)
+# n = y[1:] - m * x[1:]
+
+# # slopes and offsets lst2 vs lst0
+# k = np.diff(z)/np.diff(x)
+# l = z[1:] - k * x[1:]
+
+# # intersections
+# with np.errstate(divide='ignore'):
+#     xs = (n - l) / (k - m)
+#     ys = m * xs + n
+
+# # only take intersections that lie in the respective segment
+# mask = (xs >= x[:-1]) & (xs <= x[1:])
+# intersections = np.unique(np.row_stack((xs[mask], ys[mask])), axis=1)
+
+# # display result
+# ax = fulldf.set_index('Time').plot(legend=False)
+# ax.plot(intersections[0], intersections[1], 'ro')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # print(df.query("Branches=='4873'"))
 
