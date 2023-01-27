@@ -167,7 +167,7 @@ fig.add_trace(go.Scatter(x = cdf['Time'],
 
 fig.add_trace(go.Scatter(x = cdf['Time'], 
                         y = cdf['9839'],
-                        name = 'Source Data',
+                        name = 'Branch 9839 Webapp Response Time',
                         line = dict(color = 'Olive', width=3)))
 
 fig.update_xaxes(rangeslider_visible=True)
@@ -176,8 +176,8 @@ fig.update_xaxes(rangeslider_visible=True)
 fig.update_layout(
     # showlegend=False,
     plot_bgcolor='GhostWhite',
-    title="Example of Anomaly Detection using a Sliding Window",
-    yaxis_title="Generic Metric",
+    title="Response Time Anomaly Detection for Branch 9839",
+    yaxis_title="Response Time for Branch 9839 Webapp",
     xaxis_title="Time",
     legend_title="DataType",
     font=dict(
@@ -195,21 +195,21 @@ fig.write_html('generated_graph.html')
 
 
 
-def line_intersection(line1, line2):
-    xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
-    ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])
+# def line_intersection(line1, line2):
+#     xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
+#     ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])
 
-    def det(a, b):
-        return a[0] * b[1] - a[1] * b[0]
+#     def det(a, b):
+#         return a[0] * b[1] - a[1] * b[0]
 
-    div = det(xdiff, ydiff)
-    if div == 0:
-       raise Exception('lines do not intersect')
+#     div = det(xdiff, ydiff)
+#     if div == 0:
+#        raise Exception('lines do not intersect')
 
-    d = (det(*line1), det(*line2))
-    x = det(d, xdiff) / div
-    y = det(d, ydiff) / div
-    return x, y
+#     d = (det(*line1), det(*line2))
+#     x = det(d, xdiff) / div
+#     y = det(d, ydiff) / div
+#     return x, y
 
 
 # print(fulldf.query("Time=={}".format(60)))
